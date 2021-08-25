@@ -1,0 +1,6 @@
+select name as Customers
+from Customers
+where Id not in (select customerId from Orders)
+
+
+Selecting customers whose ID is not present in a new table (subquery) with only the IDs of those who have eaten
