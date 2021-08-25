@@ -3,3 +3,9 @@ from Scores as a, (select distinct score from Scores) as b
 where b.Score >= a.Score
 group by a.Id 
 order by a.score desc
+
+1. Create a 2nd table with just the distinct scores
+2. Equate each row with the 2nd table, filtering rows where the scores from the 2nd table that are more than the score values from the initial table
+3. Since a count(*) column is being created for the 2nd table, the group by function will reveal how many rows (scores) were not removed to satisfy the where condition
+4. group by id is sufficient however, 'group by id, score' also works
+5. Order by score from the first table, descending from top score down, with rank on its side
