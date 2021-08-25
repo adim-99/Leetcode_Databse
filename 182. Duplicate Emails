@@ -1,0 +1,13 @@
+Solution 1:
+
+select Email
+from Person
+group by Email
+having count(email) > 1
+
+
+Solution 2:
+
+select distinct a.Email
+from Person as a, Person as b
+where a.id != b.id and a.email = b.email
