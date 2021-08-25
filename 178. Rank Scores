@@ -1,0 +1,7 @@
+```python
+select a.Score as score, count(b.score) as `Rank` 
+from Scores as a, (select distinct score from Scores) as b
+where b.Score >= a.Score
+group by a.Id 
+order by a.score desc
+
