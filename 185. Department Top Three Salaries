@@ -21,3 +21,105 @@ where e4.Salary >= (
 )
 and d2.Name = "Sales"
 order by e4.Salary desc)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(select d.Name as Department, e.Name as Employee, e.Salary
+from Employee as e 
+left join Department as d on d.Id = e.DepartmentId
+where e.Salary >= (
+    select min(sals) from 
+        (select distinct e2.Salary as sals from Employee as e2 
+        where e2.DepartmentId = 1
+        order by e2.Salary desc limit 3) as tablek
+)
+and d.Name = "IT"
+order by e.Salary desc)
+
+union
+
+(select d2.Name as Department, e4.Name as Employee, e4.Salary
+from Employee as e4 
+left join Department as d2 on d2.Id = e4.DepartmentId
+where e4.Salary >= (
+    select min(sals1) from 
+        (select distinct e3.Salary as sals1 from Employee as e3 
+        where e3.DepartmentId = 2
+        order by e3.Salary desc limit 3) as tablel
+)
+and d2.Name = "Sales"
+order by e4.Salary desc)
+
+
+
+**** The 2nd version is optimised to allow for the nth highest salary to return whatever the minimum salary is (after n) if the nth highest doesn't exist
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+(select d.Name as Department, e.Name as Employee, e.Salary
+from Employee as e 
+left join Department as d on d.Id = e.DepartmentId
+where e.Salary >= ifnull(
+ (
+    select min(sals) from 
+        (select distinct e2.Salary as sals from Employee as e2 
+        where e2.DepartmentId = 1
+        order by e2.Salary desc limit 3) as tablek
+), 0)
+and d.Name = "IT"
+order by e.Salary desc)
+
+union
+
+(select d2.Name as Department, e4.Name as Employee, e4.Salary
+from Employee as e4 
+left join Department as d2 on d2.Id = e4.DepartmentId
+where e4.Salary >= ifnull(
+ (
+    select min(sals1) from 
+        (select distinct e3.Salary as sals1 from Employee as e3 
+        where e3.DepartmentId = 2
+        order by e3.Salary desc limit 3) as tablel
+), 0)
+and d2.Name = "Sales"
+order by e4.Salary desc)
+
+
+*** 3rd versions accounts for if the value is null
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+(select d.Name as Department, e.Name as Employee, e.Salary
+from Employee as e 
+left join Department as d on d.Id = e.DepartmentId
+where e.Salary >= ifnull(
+ (
+    select min(sals) from 
+        (select distinct e2.Salary as sals from Employee as e2 
+        where e2.DepartmentId = 1
+        order by e2.Salary desc limit 3) as tablek
+), 0)
+and d.Id = 1
+order by e.Salary desc)
+
+union
+
+(select d2.Name as Department, e4.Name as Employee, e4.Salary
+from Employee as e4 
+left join Department as d2 on d2.Id = e4.DepartmentId
+where e4.Salary >= ifnull(
+ (
+    select min(sals1) from 
+        (select distinct e3.Salary as sals1 from Employee as e3 
+        where e3.DepartmentId = 2
+        order by e3.Salary desc limit 3) as tablel
+), 0)
+and d2.Id = 2
+order by e4.Salary desc)
+
+*** 4th version changes department name to ID
+
