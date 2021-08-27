@@ -1,0 +1,21 @@
+select d.Name as Department, e.Name as Employee, e.Salary
+from Employee as e 
+left join Department as d on d.Id = e.DepartmentId
+where e.Salary > (
+    select distinct e2.Salary from Employee as e2 
+    where e2.DepartmentId = 1
+    order by e2.Salary desc limit 1 offset 3 
+)
+order by e.Salary desc
+
+union 
+
+select d2.Name as Department, e4.Name as Employee, e4.Salary
+from Employee as e4 
+left join Department as d2 on d2.Id = e4.DepartmentId
+where e4.Salary > (
+    select distinct e3.Salary from Employee as e3 
+    where e3.DepartmentId = 2
+    order by e3.Salary desc limit 1 offset 3 
+)
+order by e4.Salary desc
