@@ -9,3 +9,14 @@ order by a.score desc
 3. Since a count(*) column is being created for the 2nd table, the group by function will reveal how many rows (scores) were not removed to satisfy the where condition
 4. group by id is sufficient however, 'group by id, score' also works
 5. Order by score from the first table, descending from top score down, with rank on its side
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+select a.Score as score, count(b.Score) as `Rank`
+from Scores as a, (select distinct Score from Scores) as b
+where b.Score >= a.Score
+group by a.Id
+order by a.Score desc, a.Id asc
+
+*** added order by ID asc as well to ensure the lower ID is ordered first then then the larger ID when theres the same score.
+
