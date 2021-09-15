@@ -1,0 +1,10 @@
+select distinct a.Num as ConsecutiveNums 
+from Logs as a, Logs as b, Logs as c 
+where c.Id=b.Id-1 
+and b.Id=a.Id-1 
+and a.Num=b.Num 
+and b.Num=c.Num
+
+-------------------------------------------------------------------------------------------------------------
+
+Create multiple tables where value of each row equates to the value of the row_no - 1. Do this again for 3 consec numbers. Ensure IDs all match as well
